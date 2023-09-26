@@ -12,6 +12,7 @@ WORKDIR /tmp
 COPY pom.xml ./
 COPY src/main/java /tmp/src/main/java
 COPY --from=App /tmp/build /tmp/src/main/resources/public
+ENV MAVEN_OPTS="-Xmx2g"
 RUN mvn package
 
 FROM openjdk:8-jre-alpine

@@ -5,7 +5,7 @@ ARG PUBLIC_ADDRESS
 
 WORKDIR /tmp
 COPY app/ ./
-RUN yarn install && REACT_APP_SERVER_ADDRESS=${SERVER_ADDRESS} PUBLIC_URL=${PUBLIC_ADDRESS} yarn build
+RUN yarn install && yarn upgrade && REACT_APP_SERVER_ADDRESS=${SERVER_ADDRESS} PUBLIC_URL=${PUBLIC_ADDRESS} yarn build
 
 FROM maven:3.5.2-jdk-8-alpine AS MAVEN_TOOL_CHAIN
 WORKDIR /tmp
@@ -13,6 +13,7 @@ COPY pom.xml ./
 COPY src/main/java /tmp/src/main/java
 COPY --from=App /tmp/build /tmp/src/main/resources/public
 ENV MAVEN_OPTS="-Xmx2g"
+RUN MAVEN_OPTS="-Xmx2g"
 RUN mvn package
 
 FROM openjdk:8-jre-alpine
